@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from '@mui/material';
 import Link from 'next/link';
 
-export default function Custom404() {
+export default function NotFound() {
   return (
     <Box
       sx={{
