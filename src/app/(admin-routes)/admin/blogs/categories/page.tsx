@@ -1,4 +1,4 @@
-import { BlogCategoryPage } from '@/pages/categories/blogs';
+import { BlogCategoryPage } from '@/components/pages/categories/blogs';
 import { blogCategoriesService } from '@/services/blog-category.service';
 
 export default async function BlogsCategories() {

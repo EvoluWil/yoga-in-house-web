@@ -1,4 +1,4 @@
-import { ClassesPage } from '@/pages/classes/classes';
+import { ClassesPage } from '@/components/pages/classes/classes';
 import { classService } from '@/services/class.service';
 
 export default async function Classes() {

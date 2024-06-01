@@ -1,4 +1,4 @@
-import { UsersPage } from '@/pages/users/users';
+import { UsersPage } from '@/components/pages/users/users';
 import { userService } from '@/services/user.service';
 
 export default async function Users() {

@@ -1,4 +1,4 @@
-import { FormationsPage } from '@/pages/formations/formations';
+import { FormationsPage } from '@/components/pages/formations/formations';
 import { formationService } from '@/services/formation.service';
 
 export default async function Formations() {

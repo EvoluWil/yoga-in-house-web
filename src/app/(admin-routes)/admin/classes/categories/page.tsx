@@ -1,4 +1,4 @@
-import { ClassCategoryPage } from '@/pages/categories/classes';
+import { ClassCategoryPage } from '@/components/pages/categories/classes';
 import { classCategoriesService } from '@/services/class-category.service';
 
 export default async function ClassCategories() {

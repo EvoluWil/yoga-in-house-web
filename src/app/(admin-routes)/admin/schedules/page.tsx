@@ -1,4 +1,4 @@
-import { SchedulesPage } from '@/pages/schedules/schedules';
+import { SchedulesPage } from '@/components/pages/schedules/schedules';
 import { scheduleService } from '@/services/schedule.service';
 
 export default async function Schedules() {
