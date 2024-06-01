@@ -10,5 +10,5 @@ export default async function PrivateLayout({ children }: PropsWithChildren) {
     redirect('/admin/users');
   }
 
-  return children;
+  return <>children</>;
 }
