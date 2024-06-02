@@ -1,15 +1,13 @@
-import { Box, Button } from '@mui/material';
-import Link from 'next/link';
+import { authOptions } from '@/config/auth';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return (
-    <Box className="flex justify-center items-center h-screen">
-      Pagina em desenvolvimento...
-      <Link href="/" passHref>
-        <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-          Fazer login
-        </Button>
-      </Link>
-    </Box>
-  );
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+
+  if (session) {
+    redirect('/admin/users');
+  }
+
+  redirect('/auth/sign-in');
 }
