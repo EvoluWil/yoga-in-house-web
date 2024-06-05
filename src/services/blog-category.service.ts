@@ -1,3 +1,4 @@
+import { CategoryFormData } from '@/components/modal/category/category.schema';
 import { api } from '@/config/api';
 import { Category } from '@/types/category';
 import { Query } from 'nestjs-prisma-querybuilder-interface';
@@ -13,12 +14,28 @@ class BlogCategoryService {
     });
     return data;
   }
+
   async getBlogCategory(id: string) {
     return { id, name: 'John Doe' };
   }
 
-  async updateBlogCategory(id: string, data: any) {
-    return { id, ...data };
+  async createBlogCategory(categoryFormData: CategoryFormData) {
+    const { data } = await api.post(
+      '/instructor/blog-categories',
+      categoryFormData,
+    );
+    return data;
+  }
+
+  async updateBlogCategory(
+    categoryId: string,
+    categoryFormData: CategoryFormData,
+  ) {
+    const { data } = await api.post(
+      `/instructor/blog-categories/${categoryId}`,
+      categoryFormData,
+    );
+    return data;
   }
 
   async deleteBlogCategory(id: string) {
@@ -26,4 +43,4 @@ class BlogCategoryService {
   }
 }
 
-export const blogCategoriesService = new BlogCategoryService();
+export const blogCategoryService = new BlogCategoryService();

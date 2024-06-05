@@ -1,3 +1,4 @@
+import { ClassFormData } from '@/components/modal/class/class.schema';
 import { api } from '@/config/api';
 import { Class } from '@/types/class';
 import { Query } from 'nestjs-prisma-querybuilder-interface';
@@ -23,16 +24,34 @@ class ClassService {
     });
     return data;
   }
+
   async getClass(id: string) {
     return { id, name: 'John Doe' };
   }
 
-  async updateClass(id: string, data: any) {
-    return { id, ...data };
+  async createClass(classFormData: Omit<ClassFormData, 'video'>) {
+    const { data } = await api.post('/instructor/classes', classFormData);
+    return data;
   }
 
-  async deleteClass(id: string) {
-    return { id };
+  async updateClass(classId: string, classFormData: ClassFormData) {
+    const { data } = await api.post(
+      `/instructor/classes/${classId}`,
+      classFormData,
+    );
+    return data;
+  }
+
+  async updateClassVideo(classId: string, video: string) {
+    const { data } = await api.put(`/instructor/classes/${classId}/video`, {
+      video,
+    });
+    return data;
+  }
+
+  async deleteClass(classId: string) {
+    const { data } = await api.delete(`/instructor/classes/${classId}`);
+    return data;
   }
 }
 

@@ -1,3 +1,4 @@
+import { BlogFormData } from '@/components/modal/blog/blog.schema';
 import { api } from '@/config/api';
 import { Blog } from '@/types/blog';
 import { Query } from 'nestjs-prisma-querybuilder-interface';
@@ -23,12 +24,22 @@ class BlogService {
     });
     return data;
   }
+
   async getBlog(id: string) {
     return { id, name: 'John Doe' };
   }
 
-  async updateBlog(id: string, data: any) {
-    return { id, ...data };
+  async createBlog(blogFormData: BlogFormData) {
+    const { data } = await api.post('/instructor/blogs', blogFormData);
+    return data;
+  }
+
+  async updateBlog(blogId: string, blogFormData: BlogFormData) {
+    const { data } = await api.post(
+      `/instructor/blogs/${blogId}`,
+      blogFormData,
+    );
+    return data;
   }
 
   async deleteBlog(id: string) {

@@ -42,7 +42,7 @@ export function Header() {
     <Box bgcolor="primary.main" color="white">
       <Navigator open={open} onClose={() => setOpen(false)} />
       <AppBar
-        position="sticky"
+        position="fixed"
         elevation={0}
         component={Container}
         maxWidth="lg"

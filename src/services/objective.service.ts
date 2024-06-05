@@ -1,3 +1,4 @@
+import { ObjectiveFormData } from '@/components/modal/objective/objective.schema';
 import { api } from '@/config/api';
 import { Objective } from '@/types/objective';
 import { Query } from 'nestjs-prisma-querybuilder-interface';
@@ -13,12 +14,28 @@ class ObjectiveService {
     });
     return data;
   }
+
   async getObjective(id: string) {
     return { id, name: 'John Doe' };
   }
 
-  async updateObjective(id: string, data: any) {
-    return { id, ...data };
+  async createObjective(objectiveFormData: ObjectiveFormData) {
+    const { data } = await api.post(
+      '/instructor/objectives',
+      objectiveFormData,
+    );
+    return data;
+  }
+
+  async updateObjective(
+    objectiveId: string,
+    objectiveFormData: ObjectiveFormData,
+  ) {
+    const { data } = await api.put(
+      `/instructor/objectives/${objectiveId}`,
+      objectiveFormData,
+    );
+    return data;
   }
 
   async deleteObjective(id: string) {

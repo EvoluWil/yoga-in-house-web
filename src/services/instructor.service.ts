@@ -1,3 +1,4 @@
+import { InstructorFormData } from '@/components/modal/instructor/instructor.schema';
 import { api } from '@/config/api';
 import { Instructor } from '@/types/instructor';
 import { Query } from 'nestjs-prisma-querybuilder-interface';
@@ -13,12 +14,28 @@ class InstructorService {
     });
     return data;
   }
+
   async getInstructor(id: string) {
     return { id, name: 'John Doe' };
   }
 
-  async updateInstructor(id: string, data: any) {
-    return { id, ...data };
+  async createInstructor(instructorFormData: InstructorFormData) {
+    const { data } = await api.post(
+      '/instructor/instructors',
+      instructorFormData,
+    );
+    return data;
+  }
+
+  async updateInstructor(
+    instructorId: string,
+    instructorFormData: InstructorFormData,
+  ) {
+    const { data } = await api.post(
+      `/instructor/instructors/${instructorId}`,
+      instructorFormData,
+    );
+    return data;
   }
 
   async deleteInstructor(id: string) {

@@ -1,3 +1,4 @@
+import { ScheduleFormData } from '@/components/modal/schedule/schedule.schema';
 import { api } from '@/config/api';
 import { Schedule } from '@/types/schedule';
 import { Query } from 'nestjs-prisma-querybuilder-interface';
@@ -19,12 +20,22 @@ class ScheduleService {
     });
     return data;
   }
+
   async getSchedule(id: string) {
     return { id, name: 'John Doe' };
   }
 
-  async updateSchedule(id: string, data: any) {
-    return { id, ...data };
+  async createSchedule(scheduleFormData: ScheduleFormData) {
+    const { data } = await api.post('/instructor/schedules', scheduleFormData);
+    return data;
+  }
+
+  async updateSchedule(scheduleId: string, scheduleFormData: ScheduleFormData) {
+    const { data } = await api.post(
+      `/instructor/schedules/${scheduleId}`,
+      scheduleFormData,
+    );
+    return data;
   }
 
   async deleteSchedule(id: string) {

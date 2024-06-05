@@ -1,6 +1,6 @@
 'use client';
 
-import { useTheme } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import {
   MRT_ColumnDef,
   MaterialReactTable,
@@ -21,7 +21,7 @@ export const Table: <T>(props: TableProps<T>) => JSX.Element = ({
   onReload,
   emptyMessage,
 }) => {
-  const theme = useTheme();
+  const matches = useMediaQuery('(min-width:600px)');
 
   const table = useMaterialReactTable({
     columns,
@@ -55,7 +55,7 @@ export const Table: <T>(props: TableProps<T>) => JSX.Element = ({
       sortByColumnDesc: 'Ordenar por esta coluna de forma descendente',
       sortedByColumnAsc: 'Ordenado por esta coluna de forma ascendente',
       sortedByColumnDesc: 'Ordenado por esta coluna de forma descendente',
-      rowsPerPage: 'Linhas por página',
+      rowsPerPage: matches ? 'Linhas por página' : '',
       goToNextPage: 'Ir para a próxima página',
       goToPreviousPage: 'Ir para a página anterior',
     },

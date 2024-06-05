@@ -1,3 +1,5 @@
+import { Option } from '@/components/inputs/select-input/select-input';
+
 export const DifficultyEnum = {
   BEGINNER: 'BEGINNER',
   INTERMEDIATE: 'INTERMEDIATE',
@@ -22,4 +24,11 @@ export const DifficultyEnumLabel: {
   ADVANCED: { label: 'Avançado', color: 'error' },
 };
 
-export type DifficultyEnum = keyof typeof DifficultyEnum;
+export const DifficultyEnumOptions: Option[] = Object.keys(DifficultyEnum).map(
+  (key) => ({
+    label: DifficultyEnumLabel[key]?.label,
+    value: key,
+  }),
+);
+
+export type DifficultyEnumKeys = keyof typeof DifficultyEnum;

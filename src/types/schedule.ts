@@ -1,5 +1,5 @@
-import { DifficultyEnum } from './difficulty';
-import { ScheduleStatusEnum } from './schedule-status';
+import { DifficultyEnumKeys } from './difficulty';
+import { ScheduleStatusEnumKeys } from './schedule-status';
 
 export type Schedule = {
   id: string;
@@ -9,8 +9,8 @@ export type Schedule = {
   date: Date;
   limit: number;
   location: string;
-  difficulty: DifficultyEnum;
-  status: ScheduleStatusEnum;
+  difficulty: DifficultyEnumKeys;
+  status: ScheduleStatusEnumKeys;
   createdAt: Date;
   updatedAt: Date;
   instructorId: string;

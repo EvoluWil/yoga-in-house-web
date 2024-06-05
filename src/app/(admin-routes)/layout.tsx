@@ -15,7 +15,7 @@ export default async function PrivateLayout({ children }: PropsWithChildren) {
   return (
     <>
       <Header />
-      <Container>
+      <Container sx={{ mt: '148px' }}>
         <Box
           p={4}
           bgcolor="grey.100"

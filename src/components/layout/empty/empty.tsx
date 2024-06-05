@@ -14,7 +14,6 @@ export const Empty: React.FC<EmptyProps> = ({
   const [loading, setLoading] = useState(false);
 
   const handleReload = async () => {
-    console.log('Reloading...');
     setLoading(true);
     await onReload();
     setLoading(false);

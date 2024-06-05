@@ -1,6 +1,7 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { BlogModal } from '@/components/modal/blog/blog';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import { blogBaseQuery, blogService } from '@/services/blog.service';
 import { Blog } from '@/types/blog';
@@ -67,7 +68,7 @@ const columns: MRT_ColumnDef<Blog | any>[] = [
 
 export const BlogsPage: React.FC<PageProps<Blog[]>> = ({ initialData }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async (term?: string) => {
     const query = { ...blogBaseQuery };
@@ -98,7 +99,7 @@ export const BlogsPage: React.FC<PageProps<Blog[]>> = ({ initialData }) => {
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -128,6 +129,14 @@ export const BlogsPage: React.FC<PageProps<Blog[]>> = ({ initialData }) => {
         emptyMessage="Nenhuma notícia encontrada"
         onReload={handleReload}
       />
+
+      {openModal && (
+        <BlogModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={getData}
+        />
+      )}
     </>
   );
 };

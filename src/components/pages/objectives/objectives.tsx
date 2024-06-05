@@ -1,6 +1,7 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { ObjectiveModal } from '@/components/modal/objective/objective';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import {
   objectiveBaseQuery,
@@ -33,7 +34,7 @@ const columns: MRT_ColumnDef<Objective | any>[] = [
     },
   },
   {
-    accessorKey: 'classes',
+    accessorKey: 'minutes',
     header: 'Tempo de pratica',
     muiTableHeadCellProps: {
       align: 'center',
@@ -53,7 +54,7 @@ const columns: MRT_ColumnDef<Objective | any>[] = [
     },
   },
   {
-    accessorKey: 'classes',
+    accessorKey: 'schedules',
     header: 'Aulas ao vivo',
     muiTableHeadCellProps: {
       align: 'center',
@@ -98,7 +99,7 @@ export const ObjectivesPage: React.FC<PageProps<Objective[]>> = ({
   initialData,
 }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async (term?: string) => {
     const query = { ...objectiveBaseQuery };
@@ -121,7 +122,7 @@ export const ObjectivesPage: React.FC<PageProps<Objective[]>> = ({
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -151,6 +152,14 @@ export const ObjectivesPage: React.FC<PageProps<Objective[]>> = ({
         emptyMessage="Nenhuma meta semanal encontrada"
         onReload={handleReload}
       />
+
+      {openModal && (
+        <ObjectiveModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={getData}
+        />
+      )}
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { UserFormData } from '@/components/modal/user/user.schema';
 import { api } from '@/config/api';
 import { User } from '@/types/user';
 import { Query } from 'nestjs-prisma-querybuilder-interface';
@@ -13,12 +14,22 @@ class UserService {
     });
     return data;
   }
+
   async getUser(id: string) {
     return { id, name: 'John Doe' };
   }
 
-  async updateUser(id: string, data: any) {
-    return { id, ...data };
+  async createUser(userFormData: UserFormData) {
+    const { data } = await api.post('/instructor/users', userFormData);
+    return data;
+  }
+
+  async updateUser(userId: string, userFormData: UserFormData) {
+    const { data } = await api.post(
+      `/instructor/users/${userId}`,
+      userFormData,
+    );
+    return data;
   }
 
   async deleteUser(id: string) {

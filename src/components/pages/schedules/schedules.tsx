@@ -1,6 +1,7 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { ScheduleModal } from '@/components/modal/schedule/schedule';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import {
   scheduleBaseQuery,
@@ -46,7 +47,7 @@ const columns: MRT_ColumnDef<Schedule | any>[] = [
     },
   },
   {
-    accessorKey: 'updatedAt',
+    accessorKey: 'date',
     header: 'Data de inicio',
     muiTableHeadCellProps: {
       align: 'center',
@@ -98,7 +99,7 @@ export const SchedulesPage: React.FC<PageProps<Schedule[]>> = ({
   initialData,
 }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async (term?: string) => {
     const query = { ...scheduleBaseQuery };
@@ -129,7 +130,7 @@ export const SchedulesPage: React.FC<PageProps<Schedule[]>> = ({
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -150,15 +151,23 @@ export const SchedulesPage: React.FC<PageProps<Schedule[]>> = ({
         onReload={handleReload}
         onSearch={handleSearch}
         searchTitle="Pesquise por title ou descrição"
-        addTitle="Adicionar aula ao vivo"
+        addTitle="Adicionar vaga na agenda"
       />
 
       <Table
         columns={columns}
         data={data}
-        emptyMessage="Nenhuma aula ao vivo encontrada"
+        emptyMessage="Nenhum agendamento encontrado"
         onReload={handleReload}
       />
+
+      {openModal && (
+        <ScheduleModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={getData}
+        />
+      )}
     </>
   );
 };

@@ -23,11 +23,7 @@ api.interceptors.response.use(null, (err) => {
     }
   }
 
-  console.log(
-    err.response?.data?.message ||
-      err.response?.data?.message[0] ||
-      'Ops! Algo deu errado. Tente novamente mais tarde.',
-  );
+  console.log('Erro na requisição', err.response?.data?.message);
   return { data: null };
 });
 

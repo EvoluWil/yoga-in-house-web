@@ -1,12 +1,15 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { InstructorModal } from '@/components/modal/instructor/instructor';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import {
   instructorBaseQuery,
   instructorService,
 } from '@/services/instructor.service';
 import { Instructor } from '@/types/instructor';
+import { formatCPF } from '@/utils/cpf-utils';
+import { formatPhone } from '@/utils/phone-utils';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -24,10 +27,16 @@ const columns: MRT_ColumnDef<Instructor | any>[] = [
   {
     accessorKey: 'cpf',
     header: 'CPF',
+    Cell({ cell }: any) {
+      return formatCPF(cell.getValue());
+    },
   },
   {
     accessorKey: 'phone',
     header: 'Telefone',
+    Cell({ cell }: any) {
+      return formatPhone(cell.getValue());
+    },
   },
   {
     accessorKey: 'createdAt',
@@ -48,7 +57,7 @@ export const InstructorsPage: React.FC<PageProps<Instructor[]>> = ({
   initialData,
 }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async (term?: string) => {
     const query = { ...instructorBaseQuery };
@@ -93,7 +102,7 @@ export const InstructorsPage: React.FC<PageProps<Instructor[]>> = ({
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -123,6 +132,14 @@ export const InstructorsPage: React.FC<PageProps<Instructor[]>> = ({
         emptyMessage="Nenhum instrutor encontrado"
         onReload={handleReload}
       />
+
+      {openModal && (
+        <InstructorModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={getData}
+        />
+      )}
     </>
   );
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { ClassModal } from '@/components/modal/class/class';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import { classBaseQuery, classService } from '@/services/class.service';
 import { Class } from '@/types/class';
@@ -62,7 +63,7 @@ const columns: MRT_ColumnDef<Class | any>[] = [
 
 export const ClassesPage: React.FC<PageProps<Class[]>> = ({ initialData }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async (term?: string) => {
     const query = { ...classBaseQuery };
@@ -92,7 +93,7 @@ export const ClassesPage: React.FC<PageProps<Class[]>> = ({ initialData }) => {
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -120,6 +121,14 @@ export const ClassesPage: React.FC<PageProps<Class[]>> = ({ initialData }) => {
         emptyMessage="Nenhuma aula encontrada"
         onReload={handleReload}
       />
+
+      {openModal && (
+        <ClassModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={getData}
+        />
+      )}
     </>
   );
 };

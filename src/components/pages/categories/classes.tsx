@@ -1,9 +1,10 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { CategoryModal } from '@/components/modal/category/category';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import { blogCategoryBaseQuery } from '@/services/blog-category.service';
-import { classCategoriesService } from '@/services/class-category.service';
+import { classCategoryService } from '@/services/class-category.service';
 import { Category } from '@/types/category';
 import { Box } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
@@ -52,7 +53,7 @@ export const ClassCategoryPage: React.FC<PageProps<Category[]>> = ({
   initialData,
 }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async (term?: string) => {
     const query = { ...blogCategoryBaseQuery };
@@ -68,7 +69,7 @@ export const ClassCategoryPage: React.FC<PageProps<Category[]>> = ({
       ];
     }
 
-    const result = await classCategoriesService.getClassCategories(query);
+    const result = await classCategoryService.getClassCategories(query);
     if (result) {
       setData(result);
     }
@@ -76,7 +77,7 @@ export const ClassCategoryPage: React.FC<PageProps<Category[]>> = ({
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -106,6 +107,15 @@ export const ClassCategoryPage: React.FC<PageProps<Category[]>> = ({
         emptyMessage="Nenhuma categoria encontrada"
         onReload={handleReload}
       />
+
+      {openModal && (
+        <CategoryModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={getData}
+          type="CLASS"
+        />
+      )}
     </>
   );
 };

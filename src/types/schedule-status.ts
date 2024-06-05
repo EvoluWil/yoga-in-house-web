@@ -24,4 +24,4 @@ export const ScheduleStatusEnumLabel: {
   FINISHED: { label: 'Finalizado', color: 'primary' },
 };
 
-export type ScheduleStatusEnum = keyof typeof ScheduleStatusEnum;
+export type ScheduleStatusEnumKeys = keyof typeof ScheduleStatusEnum;

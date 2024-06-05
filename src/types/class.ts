@@ -1,4 +1,4 @@
-import { DifficultyEnum } from './difficulty';
+import { DifficultyEnumKeys } from './difficulty';
 
 export type Class = {
   id: string;
@@ -7,7 +7,7 @@ export type Class = {
   picture: string;
   video: string;
   duration: number;
-  difficulty: DifficultyEnum;
+  difficulty: DifficultyEnumKeys;
   createdAt: string;
   updatedAt: string;
   classCategoryId: string;

@@ -1,6 +1,7 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { UserModal } from '@/components/modal/user/user';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import { userBaseQuery, userService } from '@/services/user.service';
 import { User } from '@/types/user';
@@ -39,7 +40,7 @@ const columns: MRT_ColumnDef<User | any>[] = [
 
 export const UsersPage: React.FC<PageProps<User[]>> = ({ initialData }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   const getData = async (term?: string) => {
     const query = { ...userBaseQuery };
@@ -77,7 +78,7 @@ export const UsersPage: React.FC<PageProps<User[]>> = ({ initialData }) => {
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -107,6 +108,14 @@ export const UsersPage: React.FC<PageProps<User[]>> = ({ initialData }) => {
         emptyMessage="Nenhum usuário encontrado"
         onReload={handleReload}
       />
+
+      {openModal && (
+        <UserModal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          onSuccess={getData}
+        />
+      )}
     </>
   );
 };
