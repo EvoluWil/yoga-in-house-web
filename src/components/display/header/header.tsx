@@ -41,58 +41,54 @@ export function Header() {
   return (
     <Box bgcolor="primary.main" color="white">
       <Navigator open={open} onClose={() => setOpen(false)} />
-      <AppBar
-        position="fixed"
-        elevation={0}
-        component={Container}
-        maxWidth="lg"
-        sx={{ p: '0 !important' }}
-      >
-        <Toolbar>
-          <Grid container spacing={0.5} alignItems="center">
-            <Grid item>
-              <Box display="flex" alignItems="center">
-                <IconButton
-                  color="inherit"
-                  onClick={() => setOpen(true)}
-                  edge="start"
+      <Container>
+        <AppBar position="fixed" elevation={0} sx={{ p: '0 !important' }}>
+          <Toolbar>
+            <Grid container spacing={0.5} alignItems="center">
+              <Grid item>
+                <Box display="flex" alignItems="center">
+                  <IconButton
+                    color="inherit"
+                    onClick={() => setOpen(true)}
+                    edge="start"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Box>
+              </Grid>
+              <Grid item xs>
+                <Box
+                  display={{ xs: 'none', sm: 'flex' }}
+                  justifyContent="center"
+                  alignItems="center"
+                  component={Link}
+                  href="/"
                 >
-                  <MenuIcon />
+                  <Avatar
+                    alt="Yoga in House"
+                    src="/logo.png"
+                    sx={{ width: 52, height: 52 }}
+                  />
+                  <Typography variant="h6" fontWeight="500">
+                    Yoga in House <strong>Admin</strong>
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item>
+                <IconButton color="inherit" sx={{ mt: 1 }}>
+                  <NotificationsIcon />
                 </IconButton>
-              </Box>
+                <HeaderUser />
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <Box
-                display={{ xs: 'none', sm: 'flex' }}
-                justifyContent="center"
-                alignItems="center"
-                component={Link}
-                href="/"
-              >
-                <Avatar
-                  alt="Yoga in House"
-                  src="/logo.png"
-                  sx={{ width: 52, height: 52 }}
-                />
-                <Typography variant="h6" fontWeight="500">
-                  Yoga in House <strong>Admin</strong>
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item>
-              <IconButton color="inherit" sx={{ mt: 1 }}>
-                <NotificationsIcon />
-              </IconButton>
-              <HeaderUser />
-            </Grid>
-          </Grid>
-        </Toolbar>
-        <Toolbar sx={{ mt: -2 }}>
-          <Typography color="inherit" variant="h5" component="h1">
-            {pathTitle}
-          </Typography>
-        </Toolbar>
-      </AppBar>
+          </Toolbar>
+          <Toolbar sx={{ mt: -2 }}>
+            <Typography color="inherit" variant="h5" component="h1">
+              {pathTitle}
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Container>
     </Box>
   );
 }
