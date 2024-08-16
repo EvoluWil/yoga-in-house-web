@@ -30,7 +30,7 @@ type SelectOptions = {
 };
 
 type BlogModalProps = {
-  blog?: Blog;
+  blog: Blog | null;
   onSuccess: () => Promise<unknown>;
 } & ModalBaseProps;
 
@@ -78,7 +78,12 @@ export const BlogModal: React.FC<BlogModalProps> = ({
   };
 
   const handleEdit = async (data: BlogFormData) => {
-    const result = await blogService.updateBlog(String(blog?.id), data);
+    const body: any = { ...data };
+    if (body?.picture?.includes('http')) {
+      delete body.picture;
+    }
+
+    const result = await blogService.updateBlog(String(blog?.id), body);
     if (result) {
       toast.success('Notícia atualizada com sucesso!');
       await onSuccess();

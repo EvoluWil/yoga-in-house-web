@@ -8,11 +8,18 @@ import {
   objectiveService,
 } from '@/services/objective.service';
 import { Objective } from '@/types/objective';
-import { Event, OndemandVideo, TimerOutlined } from '@mui/icons-material';
+import {
+  Delete,
+  Edit,
+  Event,
+  OndemandVideo,
+  TimerOutlined,
+} from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import { PageProps } from '../type';
 
 const columns: MRT_ColumnDef<Objective | any>[] = [
@@ -100,6 +107,9 @@ export const ObjectivesPage: React.FC<PageProps<Objective[]>> = ({
 }) => {
   const [data, setData] = useState(initialData);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedObjective, setSelectedObjective] = useState<Objective | null>(
+    null,
+  );
 
   const getData = async (term?: string) => {
     const query = { ...objectiveBaseQuery };
@@ -136,6 +146,33 @@ export const ObjectivesPage: React.FC<PageProps<Objective[]>> = ({
     await getData(search);
   };
 
+  const handleEdit = async (objective: Objective) => {
+    setSelectedObjective(objective);
+    setOpenModal(true);
+  };
+
+  const handleDelete = async (objective: Objective) => {
+    Swal.fire({
+      title: 'Deseja realmente remover esta meta?',
+      text: 'Esta ação não poderá ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sim, remover!',
+      cancelButtonText: 'Cancelar',
+      preConfirm: async () => {
+        const response = await objectiveService.deleteObjective(
+          String(objective.id),
+        );
+        if (response) {
+          toast.success('Meta removida com sucesso');
+          await getData();
+        }
+      },
+    });
+  };
+
   return (
     <>
       <HeaderPage
@@ -151,13 +188,29 @@ export const ObjectivesPage: React.FC<PageProps<Objective[]>> = ({
         data={data}
         emptyMessage="Nenhuma meta semanal encontrada"
         onReload={handleReload}
+        actions={[
+          {
+            icon: () => <Edit color="secondary" />,
+            label: () => 'Editar',
+            onClick: handleEdit,
+          },
+          {
+            icon: () => <Delete color="error" />,
+            label: () => 'Remover',
+            onClick: handleDelete,
+          },
+        ]}
       />
 
       {openModal && (
         <ObjectiveModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setSelectedObjective(null);
+            setOpenModal(false);
+          }}
           onSuccess={getData}
+          objective={selectedObjective}
         />
       )}
     </>

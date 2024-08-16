@@ -2,10 +2,12 @@
 
 import { Table } from '@/components/layout/table/table';
 import { ClassModal } from '@/components/modal/class/class';
+import { VideoModal } from '@/components/modal/video/video';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import { classBaseQuery, classService } from '@/services/class.service';
 import { Class } from '@/types/class';
 import { DifficultyEnumLabel } from '@/types/difficulty';
+import { Edit, VideoCall } from '@mui/icons-material';
 import { Chip } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
@@ -64,6 +66,8 @@ const columns: MRT_ColumnDef<Class | any>[] = [
 export const ClassesPage: React.FC<PageProps<Class[]>> = ({ initialData }) => {
   const [data, setData] = useState(initialData);
   const [openModal, setOpenModal] = useState(false);
+  const [openVideoModal, setOpenVideoModal] = useState(false);
+  const [selectedClass, setSelectedClass] = useState<Class | null>(null);
 
   const getData = async (term?: string) => {
     const query = { ...classBaseQuery };
@@ -105,6 +109,16 @@ export const ClassesPage: React.FC<PageProps<Class[]>> = ({ initialData }) => {
     await getData(search);
   };
 
+  const handleEdit = async (classData: Class) => {
+    setSelectedClass(classData);
+    setOpenModal(true);
+  };
+
+  const handleEditVideo = async (classData: Class) => {
+    setSelectedClass(classData);
+    setOpenVideoModal(true);
+  };
+
   return (
     <>
       <HeaderPage
@@ -120,13 +134,41 @@ export const ClassesPage: React.FC<PageProps<Class[]>> = ({ initialData }) => {
         data={data}
         emptyMessage="Nenhuma aula encontrada"
         onReload={handleReload}
+        actions={[
+          {
+            icon: () => <Edit color="secondary" />,
+            label: () => 'Editar aula',
+            onClick: handleEdit,
+          },
+          {
+            icon: () => <VideoCall color="secondary" />,
+            label: () => 'Alterar vídeo',
+            onClick: handleEditVideo,
+          },
+        ]}
       />
 
       {openModal && (
         <ClassModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setSelectedClass(null);
+            setOpenModal(false);
+          }}
           onSuccess={getData}
+          classData={selectedClass}
+        />
+      )}
+
+      {openVideoModal && (
+        <VideoModal
+          open={openModal}
+          onClose={() => {
+            setSelectedClass(null);
+            setOpenVideoModal(false);
+          }}
+          onSuccess={getData}
+          classData={selectedClass}
         />
       )}
     </>

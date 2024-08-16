@@ -13,6 +13,7 @@ type OutlinedTextInputPropsEdit = Omit<OutlinedTextFieldProps, 'variant'>;
 
 export interface TextInputStyledProps extends OutlinedTextInputPropsEdit {
   icon?: JSX.Element;
+  onCallback?: (value: string) => void;
 }
 
 export type TextInputProps<T extends FieldValues> = TextInputStyledProps &
@@ -26,6 +27,7 @@ export function TextInput<T extends FieldValues>({
   rules,
   shouldUnregister,
   disabled,
+  onCallback,
   select = false,
   ...rest
 }: TextInputProps<T>) {
@@ -58,6 +60,12 @@ export function TextInput<T extends FieldValues>({
       }}
       {...rest}
       {...field}
+      onChange={(e) => {
+        field.onChange(e);
+        if (onCallback) {
+          onCallback(e.target.value);
+        }
+      }}
       InputProps={{
         startAdornment: icon ? (
           <InputAdornment

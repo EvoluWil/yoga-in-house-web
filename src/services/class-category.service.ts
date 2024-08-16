@@ -31,7 +31,7 @@ class ClassCategoryService {
     categoryId: string,
     categoryFormData: CategoryFormData,
   ) {
-    const { data } = await api.post(
+    const { data } = await api.put(
       `/instructor/class-categories/${categoryId}`,
       categoryFormData,
     );

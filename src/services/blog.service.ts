@@ -35,10 +35,7 @@ class BlogService {
   }
 
   async updateBlog(blogId: string, blogFormData: BlogFormData) {
-    const { data } = await api.post(
-      `/instructor/blogs/${blogId}`,
-      blogFormData,
-    );
+    const { data } = await api.put(`/instructor/blogs/${blogId}`, blogFormData);
     return data;
   }
 

@@ -21,7 +21,7 @@ import {
 } from './category.schema';
 
 type CategoryModalProps = {
-  category?: Category;
+  category: Category | null;
   onSuccess: () => Promise<unknown>;
   type: 'CLASS' | 'BLOG';
 } & ModalBaseProps;

@@ -10,9 +10,12 @@ import {
 import { Instructor } from '@/types/instructor';
 import { formatCPF } from '@/utils/cpf-utils';
 import { formatPhone } from '@/utils/phone-utils';
+import { Cancel, CheckCircle, Edit } from '@mui/icons-material';
+import { Chip } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import { PageProps } from '../type';
 
 const columns: MRT_ColumnDef<Instructor | any>[] = [
@@ -39,6 +42,28 @@ const columns: MRT_ColumnDef<Instructor | any>[] = [
     },
   },
   {
+    accessorKey: 'active',
+    header: 'Status',
+    muiTableHeadCellProps: {
+      align: 'center',
+    },
+    muiTableBodyCellProps: {
+      align: 'center',
+    },
+    Cell({ cell }: any) {
+      const isActive = cell.getValue();
+      return (
+        <Chip
+          label={isActive ? 'Ativo' : 'Inativo'}
+          variant="filled"
+          size="small"
+          sx={{ width: 100 }}
+          color={isActive ? 'success' : 'error'}
+        />
+      );
+    },
+  },
+  {
     accessorKey: 'createdAt',
     header: 'Criado em',
     muiTableHeadCellProps: {
@@ -58,6 +83,8 @@ export const InstructorsPage: React.FC<PageProps<Instructor[]>> = ({
 }) => {
   const [data, setData] = useState(initialData);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedInstructor, setSelectedInstructor] =
+    useState<Instructor | null>(null);
 
   const getData = async (term?: string) => {
     const query = { ...instructorBaseQuery };
@@ -116,6 +143,44 @@ export const InstructorsPage: React.FC<PageProps<Instructor[]>> = ({
     await getData(search);
   };
 
+  const handleEdit = async (instructor: Instructor) => {
+    setSelectedInstructor(instructor);
+    setOpenModal(true);
+  };
+
+  const handleUpdateActive = async (instructor: Instructor) => {
+    Swal.fire({
+      title: `Deseja realmente ${
+        instructor?.active ? 'INATIVAR' : 'REATIVAR'
+      } este instrutor?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: instructor?.active ? '#d33' : '#061',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: `Sim, ${instructor?.active ? 'inativar' : 'reativar'}`,
+      cancelButtonText: 'Cancelar',
+      preConfirm: async () => {
+        if (instructor.active) {
+          const response = await instructorService.inactiveInstructor(
+            String(instructor.id),
+          );
+          if (response) {
+            toast.success('Instrutor inativado com sucesso');
+            await getData();
+          }
+        } else {
+          const response = await instructorService.reactivateInstructor(
+            String(instructor.id),
+          );
+          if (response) {
+            toast.success('Instrutor reativado com sucesso');
+            await getData();
+          }
+        }
+      },
+    });
+  };
+
   return (
     <>
       <HeaderPage
@@ -131,13 +196,34 @@ export const InstructorsPage: React.FC<PageProps<Instructor[]>> = ({
         data={data}
         emptyMessage="Nenhum instrutor encontrado"
         onReload={handleReload}
+        actions={[
+          {
+            icon: () => <Edit color="secondary" />,
+            label: () => 'Editar',
+            onClick: handleEdit,
+          },
+          {
+            icon: ({ active }) =>
+              active ? (
+                <Cancel color="error" />
+              ) : (
+                <CheckCircle color="success" />
+              ),
+            label: ({ active }) => (active ? 'Inativar' : 'Reativar'),
+            onClick: handleUpdateActive,
+          },
+        ]}
       />
 
       {openModal && (
         <InstructorModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setOpenModal(false);
+            setSelectedInstructor(null);
+          }}
           onSuccess={getData}
+          instructor={selectedInstructor}
         />
       )}
     </>

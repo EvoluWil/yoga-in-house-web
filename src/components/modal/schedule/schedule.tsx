@@ -38,7 +38,7 @@ import {
 } from './schedule.schema';
 
 type ScheduleModalProps = {
-  schedule?: Schedule;
+  schedule: Schedule | null;
   onSuccess: () => Promise<unknown>;
 } & ModalBaseProps;
 

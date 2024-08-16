@@ -16,12 +16,23 @@ export default function SignInSide() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundImage: 'url(/background.jpg)',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
-      />
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Avatar
+          src="/logo.png"
+          sx={{
+            width: '300px',
+            height: '500px',
+          }}
+        />
+      </Grid>
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{

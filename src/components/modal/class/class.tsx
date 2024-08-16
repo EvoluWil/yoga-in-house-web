@@ -43,7 +43,7 @@ type SelectOptions = {
 };
 
 type ClassModalProps = {
-  classData?: Class;
+  classData: Class | null;
   onSuccess: () => Promise<unknown>;
 } & ModalBaseProps;
 
@@ -116,6 +116,14 @@ export const ClassModal: React.FC<ClassModalProps> = ({
   };
 
   const handleEdit = async (data: ClassFormData) => {
+    if (data?.video) {
+      delete data.video;
+    }
+
+    if (data?.picture?.includes('http')) {
+      delete data.picture;
+    }
+
     const result = await classService.updateClass(String(classData?.id), data);
     if (result) {
       toast.success('Aula atualizada com sucesso!');
@@ -193,7 +201,6 @@ export const ClassModal: React.FC<ClassModalProps> = ({
           variant="RECTANGLE"
           sx={{ mb: 2 }}
         />
-
         <TextInput
           label="Titulo da aula"
           placeholder="Digite o titulo"
@@ -201,7 +208,6 @@ export const ClassModal: React.FC<ClassModalProps> = ({
           control={control}
           icon={<Event />}
         />
-
         <TextInput
           label="Descrição da aula"
           placeholder="Digite a descrição..."
@@ -211,7 +217,6 @@ export const ClassModal: React.FC<ClassModalProps> = ({
           rows={3}
           icon={<ArticleOutlined sx={{ mt: -6 }} />}
         />
-
         <SelectInput
           control={control}
           name="difficulty"
@@ -220,7 +225,6 @@ export const ClassModal: React.FC<ClassModalProps> = ({
           options={DifficultyEnumOptions}
           icon={<TrendingUp />}
         />
-
         <SelectInput
           placeholder="Selecione a instrutor"
           name="instructorId"
@@ -229,7 +233,6 @@ export const ClassModal: React.FC<ClassModalProps> = ({
           options={selectOptions.instructors}
           icon={<TimerOutlined />}
         />
-
         <SelectInput
           placeholder="Selecione a categoria"
           name="classCategoryId"
@@ -238,13 +241,14 @@ export const ClassModal: React.FC<ClassModalProps> = ({
           options={selectOptions.categories}
           icon={<TimerOutlined />}
         />
-
-        <VideoInput
-          name="video"
-          control={control}
-          sx={{ mt: 2 }}
-          onChangeDuration={handleChangeDuration}
-        />
+        {!classData && (
+          <VideoInput
+            name="video"
+            control={control}
+            sx={{ mt: 2 }}
+            onChangeDuration={handleChangeDuration}
+          />
+        )}
       </Box>
     </ModalBase>
   );

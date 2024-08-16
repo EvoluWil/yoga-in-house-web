@@ -1,13 +1,14 @@
 'use client';
 
 import { Table } from '@/components/layout/table/table';
+import { FormationModal } from '@/components/modal/formations/formation';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import {
   formationBaseQuery,
   formationService,
 } from '@/services/formation.service';
 import { Formation } from '@/types/formation';
-import { OndemandVideo } from '@mui/icons-material';
+import { Edit, OndemandVideo } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
@@ -58,7 +59,10 @@ export const FormationsPage: React.FC<PageProps<Formation[]>> = ({
   initialData,
 }) => {
   const [data, setData] = useState(initialData);
-  const [openAddModal, setOpenAddModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedFormation, setSelectedFormation] = useState<Formation | null>(
+    null,
+  );
 
   const getData = async (term?: string) => {
     const query = { ...formationBaseQuery };
@@ -89,7 +93,7 @@ export const FormationsPage: React.FC<PageProps<Formation[]>> = ({
   };
 
   const handleAdd = async () => {
-    setOpenAddModal(true);
+    setOpenModal(true);
   };
 
   const handleReload = async () => {
@@ -103,6 +107,10 @@ export const FormationsPage: React.FC<PageProps<Formation[]>> = ({
     await getData(search);
   };
 
+  const handleEdit = async (formation: Formation) => {
+    setSelectedFormation(formation);
+    setOpenModal(true);
+  };
   return (
     <>
       <HeaderPage
@@ -118,7 +126,26 @@ export const FormationsPage: React.FC<PageProps<Formation[]>> = ({
         data={data}
         emptyMessage="Nenhuma trilha encontrada"
         onReload={handleReload}
+        actions={[
+          {
+            icon: () => <Edit color="secondary" />,
+            label: () => 'Editar trilha',
+            onClick: handleEdit,
+          },
+        ]}
       />
+
+      {openModal && (
+        <FormationModal
+          open={openModal}
+          onClose={() => {
+            setOpenModal(false);
+            setSelectedFormation(null);
+          }}
+          onSuccess={getData}
+          formation={selectedFormation}
+        />
+      )}
     </>
   );
 };

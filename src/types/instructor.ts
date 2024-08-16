@@ -5,4 +5,5 @@ export type Instructor = {
   cpf: string;
   picture: string;
   phone: string;
+  active: boolean;
 };

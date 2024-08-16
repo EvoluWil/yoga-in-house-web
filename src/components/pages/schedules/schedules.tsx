@@ -10,10 +10,12 @@ import {
 import { DifficultyEnumLabel } from '@/types/difficulty';
 import { Schedule } from '@/types/schedule';
 import { ScheduleStatusEnumLabel } from '@/types/schedule-status';
+import { Cancel, Edit } from '@mui/icons-material';
 import { Chip } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 import { PageProps } from '../type';
 
 const columns: MRT_ColumnDef<Schedule | any>[] = [
@@ -100,6 +102,9 @@ export const SchedulesPage: React.FC<PageProps<Schedule[]>> = ({
 }) => {
   const [data, setData] = useState(initialData);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState<Schedule | null>(
+    null,
+  );
 
   const getData = async (term?: string) => {
     const query = { ...scheduleBaseQuery };
@@ -144,6 +149,33 @@ export const SchedulesPage: React.FC<PageProps<Schedule[]>> = ({
     await getData(search);
   };
 
+  const handleEdit = async (schedule: Schedule) => {
+    setSelectedSchedule(schedule);
+    setOpenModal(true);
+  };
+
+  const handleDelete = async (schedule: Schedule) => {
+    Swal.fire({
+      title: 'Deseja realmente cancelar este agendamento?',
+      text: 'Esta ação não poderá ser desfeita!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sim, cancelar!',
+      cancelButtonText: 'Cancelar',
+      preConfirm: async () => {
+        const response = await scheduleService.deleteSchedule(
+          String(schedule.id),
+        );
+        if (response) {
+          toast.success('Agendamento cancelado com sucesso');
+          await getData();
+        }
+      },
+    });
+  };
+
   return (
     <>
       <HeaderPage
@@ -159,13 +191,30 @@ export const SchedulesPage: React.FC<PageProps<Schedule[]>> = ({
         data={data}
         emptyMessage="Nenhum agendamento encontrado"
         onReload={handleReload}
+        actions={[
+          {
+            icon: () => <Edit color="secondary" />,
+            label: () => 'Editar',
+            onClick: handleEdit,
+          },
+          {
+            icon: () => <Cancel color="error" />,
+            label: () => 'Cancelar',
+            condition: ({ status }) => status === 'PENDING',
+            onClick: handleDelete,
+          },
+        ]}
       />
 
       {openModal && (
         <ScheduleModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setSelectedSchedule(null);
+            setOpenModal(false);
+          }}
           onSuccess={getData}
+          schedule={selectedSchedule}
         />
       )}
     </>

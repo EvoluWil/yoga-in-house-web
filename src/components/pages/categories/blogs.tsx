@@ -8,6 +8,7 @@ import {
   blogCategoryService,
 } from '@/services/blog-category.service';
 import { Category } from '@/types/category';
+import { Edit } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
@@ -56,6 +57,9 @@ export const BlogCategoryPage: React.FC<PageProps<Category[]>> = ({
 }) => {
   const [data, setData] = useState(initialData);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  );
 
   const getData = async (term?: string) => {
     const query = { ...blogCategoryBaseQuery };
@@ -93,6 +97,11 @@ export const BlogCategoryPage: React.FC<PageProps<Category[]>> = ({
     await getData(search);
   };
 
+  const handleEdit = async (category: Category) => {
+    setSelectedCategory(category);
+    setOpenModal(true);
+  };
+
   return (
     <>
       <HeaderPage
@@ -108,14 +117,25 @@ export const BlogCategoryPage: React.FC<PageProps<Category[]>> = ({
         data={data}
         emptyMessage="Nenhuma categoria encontrada"
         onReload={handleReload}
+        actions={[
+          {
+            icon: () => <Edit color="secondary" />,
+            label: () => 'Editar categoria',
+            onClick: handleEdit,
+          },
+        ]}
       />
 
       {openModal && (
         <CategoryModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setSelectedCategory(null);
+            setOpenModal(false);
+          }}
           onSuccess={getData}
           type="BLOG"
+          category={selectedCategory}
         />
       )}
     </>

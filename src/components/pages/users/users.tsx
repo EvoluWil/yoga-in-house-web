@@ -112,7 +112,9 @@ export const UsersPage: React.FC<PageProps<User[]>> = ({ initialData }) => {
       {openModal && (
         <UserModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setOpenModal(false);
+          }}
           onSuccess={getData}
         />
       )}

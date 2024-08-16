@@ -38,8 +38,9 @@ class ObjectiveService {
     return data;
   }
 
-  async deleteObjective(id: string) {
-    return { id };
+  async deleteObjective(objectiveId: string) {
+    const { data } = await api.delete(`/instructor/objectives/${objectiveId}`);
+    return data;
   }
 }
 

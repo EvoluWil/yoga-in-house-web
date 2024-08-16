@@ -17,7 +17,6 @@ import {
 
 interface FileInputStyledProps {
   variant?: 'CIRCLE' | 'RECTANGLE';
-  defaultValue?: string;
   isBase64?: boolean;
   sx?: SxProps<Theme>;
 }
@@ -49,12 +48,10 @@ export function ImageInput<T extends FieldValues>({
   });
 
   const preview = useMemo(() => {
-    if (
-      defaultValue ||
-      (typeof field?.value === 'string' && field?.value?.includes('http'))
-    ) {
-      return defaultValue;
+    if (typeof field?.value === 'string' && field?.value?.includes('http')) {
+      return `${field.value}?${new Date().getTime()}`;
     }
+
     if (field?.value && isBase64) {
       return field.value;
     }
@@ -64,7 +61,7 @@ export function ImageInput<T extends FieldValues>({
     }
 
     return null;
-  }, [field?.value, defaultValue]);
+  }, [field?.value]);
 
   const handleAddImageClick = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.length) {
@@ -101,7 +98,7 @@ export function ImageInput<T extends FieldValues>({
           disabled={disabled || isSubmitting}
         />
         <Avatar
-          src={preview || defaultValue}
+          src={preview || ''}
           className="aspect-square mx-8 my-auto bg-transparent cursor-pointer border-2"
           sx={{
             width: variant === 'CIRCLE' ? 144 : 280,
@@ -117,20 +114,22 @@ export function ImageInput<T extends FieldValues>({
             },
           }}
         >
-          <Stack direction="column" alignItems="center">
-            <AddAPhotoOutlined
-              sx={{
-                fontSize: 32,
-                color: !!error?.message ? 'error.main' : 'text.secondary',
-              }}
-            />
-            <Typography
-              variant="caption"
-              color={!!error?.message ? 'error.main' : 'text.secondary'}
-            >
-              Adicionar imagem
-            </Typography>
-          </Stack>
+          {!preview && (
+            <Stack direction="column" alignItems="center">
+              <AddAPhotoOutlined
+                sx={{
+                  fontSize: 32,
+                  color: !!error?.message ? 'error.main' : 'text.secondary',
+                }}
+              />
+              <Typography
+                variant="caption"
+                color={!!error?.message ? 'error.main' : 'text.secondary'}
+              >
+                Adicionar imagem
+              </Typography>
+            </Stack>
+          )}
         </Avatar>
       </Box>
       {preview && (

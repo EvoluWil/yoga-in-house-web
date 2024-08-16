@@ -31,15 +31,25 @@ class InstructorService {
     instructorId: string,
     instructorFormData: InstructorFormData,
   ) {
-    const { data } = await api.post(
+    const { data } = await api.put(
       `/instructor/instructors/${instructorId}`,
       instructorFormData,
     );
     return data;
   }
 
-  async deleteInstructor(id: string) {
-    return { id };
+  async inactiveInstructor(instructorId: string) {
+    const { data } = await api.delete(
+      `/instructor/instructors/${instructorId}`,
+    );
+    return data;
+  }
+
+  async reactivateInstructor(instructorId: string) {
+    const { data } = await api.put(
+      `/instructor/instructors/${instructorId}/reactivate`,
+    );
+    return data;
   }
 }
 

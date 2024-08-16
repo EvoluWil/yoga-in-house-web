@@ -20,7 +20,7 @@ import {
 } from './instructor.schema';
 
 type InstructorModalProps = {
-  instructor?: Instructor;
+  instructor: Instructor | null;
   onSuccess: () => Promise<unknown>;
 } & ModalBaseProps;
 

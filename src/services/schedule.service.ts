@@ -31,15 +31,16 @@ class ScheduleService {
   }
 
   async updateSchedule(scheduleId: string, scheduleFormData: ScheduleFormData) {
-    const { data } = await api.post(
+    const { data } = await api.put(
       `/instructor/schedules/${scheduleId}`,
       scheduleFormData,
     );
     return data;
   }
 
-  async deleteSchedule(id: string) {
-    return { id };
+  async deleteSchedule(scheduleId: string) {
+    const { data } = await api.delete(`/instructor/schedules/${scheduleId}`);
+    return data;
   }
 }
 

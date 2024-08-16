@@ -34,8 +34,8 @@ class ClassService {
     return data;
   }
 
-  async updateClass(classId: string, classFormData: ClassFormData) {
-    const { data } = await api.post(
+  async updateClass(classId: string, classFormData: Partial<ClassFormData>) {
+    const { data } = await api.put(
       `/instructor/classes/${classId}`,
       classFormData,
     );

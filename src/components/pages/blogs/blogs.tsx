@@ -5,7 +5,11 @@ import { BlogModal } from '@/components/modal/blog/blog';
 import { HeaderPage } from '@/components/partials/header-page/header-page';
 import { blogBaseQuery, blogService } from '@/services/blog.service';
 import { Blog } from '@/types/blog';
-import { ThumbDownAltOutlined, ThumbUpAltOutlined } from '@mui/icons-material';
+import {
+  Edit,
+  ThumbDownAltOutlined,
+  ThumbUpAltOutlined,
+} from '@mui/icons-material';
 import { Typography } from '@mui/material';
 import { MRT_ColumnDef } from 'material-react-table';
 import { useState } from 'react';
@@ -69,6 +73,7 @@ const columns: MRT_ColumnDef<Blog | any>[] = [
 export const BlogsPage: React.FC<PageProps<Blog[]>> = ({ initialData }) => {
   const [data, setData] = useState(initialData);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
 
   const getData = async (term?: string) => {
     const query = { ...blogBaseQuery };
@@ -113,6 +118,11 @@ export const BlogsPage: React.FC<PageProps<Blog[]>> = ({ initialData }) => {
     await getData(search);
   };
 
+  const handleEdit = async (blog: Blog) => {
+    setSelectedBlog(blog);
+    setOpenModal(true);
+  };
+
   return (
     <>
       <HeaderPage
@@ -128,13 +138,24 @@ export const BlogsPage: React.FC<PageProps<Blog[]>> = ({ initialData }) => {
         data={data}
         emptyMessage="Nenhuma notícia encontrada"
         onReload={handleReload}
+        actions={[
+          {
+            icon: () => <Edit color="secondary" />,
+            label: () => 'Editar notícia',
+            onClick: handleEdit,
+          },
+        ]}
       />
 
       {openModal && (
         <BlogModal
           open={openModal}
-          onClose={() => setOpenModal(false)}
+          onClose={() => {
+            setSelectedBlog(null);
+            setOpenModal(false);
+          }}
           onSuccess={getData}
+          blog={selectedBlog}
         />
       )}
     </>

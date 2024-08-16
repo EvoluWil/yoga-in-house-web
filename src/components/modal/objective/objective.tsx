@@ -24,7 +24,7 @@ import {
 } from './objective.schema';
 
 type ObjectiveModalProps = {
-  objective?: Objective;
+  objective: Objective | null;
   onSuccess: () => Promise<unknown>;
 } & ModalBaseProps;
 
