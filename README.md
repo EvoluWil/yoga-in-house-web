@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Yoga In House Admin
 
-## Getting Started
+**Yoga In House Admin** é a plataforma administrativa do aplicativo **Yoga In House**, um app completo para aulas de yoga on-demand e ao vivo. Este painel web permite o gerenciamento de conteúdos, usuários, cursos e assinaturas vinculados ao app mobile.
 
-First, run the development server:
+## ✨ Sobre o Projeto
+
+Este sistema foi desenvolvido professores de yoga, com o objetivo de oferecer uma solução prática e profissional para gerenciamento de sua plataforma de ensino.
+
+O projeto conta com:
+
+- Interface administrativa moderna e responsiva
+- Gerenciamento de alunos, cursos, vídeos e assinaturas
+- Integração com o backend exclusivo da plataforma
+
+> Toda a arquitetura, design e implementação foram feitos por mim, utilizando tecnologias modernas de desenvolvimento web.
+
+## 🛠️ Tecnologias Utilizadas
+
+- [Next.js](https://nextjs.org/) — Framework React para renderização SSR e SSG
+- [Tailwind CSS](https://tailwindcss.com/) — Estilização rápida e responsiva
+- [Material UI (MUI)](https://mui.com/) — Componentes UI com design elegante
+- [React Hooks](https://reactjs.org/docs/hooks-intro.html) — Gerenciamento de estado e ciclos de vida
+- [Context API](https://reactjs.org/docs/context.html) — Compartilhamento de estado global
+
+
+## 🚀 Como Rodar Localmente
 
 ```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/yoga-in-house-admin.git
+
+# Acesse a pasta do projeto
+cd yoga-in-house-admin
+
+# Instale as dependências
+npm install
+
+# Inicie o servidor de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse em: http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✅ Funcionalidades
+ - Login e autenticação
+ - Cadastro e edição de aulas
+ - Upload de vídeos e materiais
+ - Gerenciamento de alunos
+ - Controle de assinaturas ativas
+ - Gerenciamento de formações
+ - Gerenciamento de agendamentos
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## 📌 Observações
+Este projeto faz parte de um ecossistema maior que inclui:
 
-## Learn More
+Yoga In House App (mobile) — Aplicativo usado pelos alunos - PRIVATE
 
-To learn more about Next.js, take a look at the following resources:
+Yoga In House Backend — API REST responsável por dados e autenticação - PRIVATE
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 👨‍💻 Autor
+Made with 💜 by <a href="https://github.com/EvoluWil" target="_blank">Willian Rodrigues</a>
